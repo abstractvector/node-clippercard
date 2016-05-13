@@ -1,0 +1,5 @@
+# folder containing the unbuilt source
+src/
+
+# sandbox file for local testing
+test.js

@@ -8,6 +8,9 @@ pids
 *.pid
 *.seed
 
+# folder containing the compiled JS code
+lib
+
 # vim files
 **.swp
 
@@ -35,4 +38,5 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
+# sandbox file for local testing
 test.js
