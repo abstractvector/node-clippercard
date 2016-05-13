@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "cheerio": "^0.20.0",
+    "pdf2json": "^1.1.5",
     "request": "^2.72.0"
   }
 }

@@ -40,3 +40,6 @@ node_modules
 
 # sandbox file for local testing
 test.js
+
+# folder for storing statements
+data
