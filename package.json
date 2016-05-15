@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Unofficial Node.js library to retrieve and parse profile and activity data from the Bay Area's Clipper Card system",
   "main": "index.js",
+  "engines": {
+    "node": ">=0.10"
+  },
   "scripts": {
     "build": "babel ./src/ -d ./lib/",
     "prepublish": "npm run build",
