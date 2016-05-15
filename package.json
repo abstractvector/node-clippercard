@@ -1,6 +1,6 @@
 {
   "name": "node-clippercard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Unofficial Node.js library to retrieve and parse profile and activity data from the Bay Area's Clipper Card system",
   "main": "index.js",
   "engines": {
@@ -9,7 +9,8 @@
   "scripts": {
     "build": "babel ./src/ -d ./lib/",
     "prepublish": "npm run build",
-    "test": "mocha test"
+    "test": "npm run build && babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha",
+    "mocha": "mocha"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,9 @@
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
-    "mocha": "^2.4.5"
+    "chai": "*",
+    "isparta": "^4.0.0",
+    "mocha": "*"
   },
   "babel": {
     "presets": [

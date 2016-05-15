@@ -52,6 +52,10 @@ class ClipperAccount {
         throw new Error('The password must be provided in the class options');
       }
 
+      if (options.userAgent) {
+        this.userAgent = options.userAgent;
+      }
+
     }
   }
 
