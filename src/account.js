@@ -77,7 +77,7 @@ class ClipperAccount {
       return callback(null);
     }
 
-    this._failedLoginAttempts = 0;
+    this._failedLoginCount = 0;
     this._login(callback);
   }
 
@@ -168,7 +168,7 @@ class ClipperAccount {
 
     var self = this;
 
-    this._login(function(error) {
+    this.login(function(error) {
       if (error) {
         return callback(error);
       }
@@ -213,7 +213,6 @@ class ClipperAccount {
       } catch (e) {
         if (e instanceof TypeError) {
           // swallow any TypeError exceptions that are thrown
-          console.log(e);
         } else {
           return callback(e);
         }
@@ -226,7 +225,6 @@ class ClipperAccount {
       } catch (e) {
         if (e instanceof TypeError) {
           // swallow any TypeError exceptions that are thrown
-          console.log(e);
         } else {
           return callback(e);
         }

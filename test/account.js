@@ -1,6 +1,9 @@
 import chai from 'chai'
 let expect = chai.expect
 
+import nock from 'nock'
+nock.disableNetConnect();
+
 import ClipperAccount from '../lib/account.js'
 
 describe('ClipperAccount class', function() {
@@ -80,6 +83,52 @@ describe('ClipperAccount class', function() {
       describe('getProfile()', function() {
         it('has a getProfile() method', function() {
           expect(account).to.respondTo('getProfile');
+        });
+      });
+    });
+  });
+
+  describe('Data retrieval', function() {
+    let account = new ClipperAccount({email: 'test@example.com', password: 'test'});
+
+    let cookies = [
+      'JSESSIONID=!SlNFU1NJT05JRA==; path=/ClipperCard; secure; HttpOnly',
+      'visid_incap_123456=dmlzaWRfaW5jYXBfMTIzNDU2; expires=Tue, 31 Dec 2099 12:34:56 GMT; path=/; Domain=.clippercard.com',
+      'incap_ses_12_123456=aW5jYXBfc2VzXzEyXzEyMzQ1Ng==; path=/; Domain=.clippercard.com',
+      '___utmvmABcdEFG=X19fdXRtdm1BQmNkRUZH; path=/; Max-Age=900',
+      '___utmvaABcdEFG=X19fdXRtdmFBQmNkRUZH; path=/; Max-Age=900',
+      '___utmvbABcdEFG=X19fdXRtdmJBQmNkRUZH; path=/; Max-Age=900'
+    ];
+
+    beforeEach(function() {
+      let loginPage = nock('https://www.clippercard.com')
+          .get('/ClipperCard/loginFrame.jsf')
+          .replyWithFile(200, __dirname + '/fixtures/login-frame.html', {'Set-Cookie': cookies});
+      
+      let loginPost = nock('https://www.clippercard.com')
+          .post('/ClipperCard/loginFrame.jsf')
+          .matchHeader('cookie', function(h) {
+            return h.indexOf('JSESSIONID=!SlNFU1NJT05JRA==') > -1;
+          })
+          .replyWithFile(302, __dirname + '/fixtures/login-post.html', {
+            'location': 'https://www.clippercard.com/ClipperCard/dashboard.jsf',
+            'set-cookie': [
+              'firstName=firstName; path=/; secure; Max-Age=300; Expires=Tue, 31-Dec-2099 12:34:56;secure; GMT;secure;',
+              'JSESSIONID=!bG9nZ2VkaW5KU0VTU0lPTklE; path=/ClipperCard; secure; HttpOnly'
+            ]
+          });
+
+      let dashboard = nock('https://www.clippercard.com')
+          .get('/ClipperCard/dashboard.jsf')
+          .replyWithFile(200,  __dirname + '/fixtures/dashboard.html');
+    });
+
+    describe('Logging in', function() {
+      it('works', function() {
+        account.getProfile(function(error, result) {
+          expect(error).to.be(null);
+          expect(result).to.be.an('object');
+          expect(result).to.have.keys('name', 'email');
         });
       });
     });
